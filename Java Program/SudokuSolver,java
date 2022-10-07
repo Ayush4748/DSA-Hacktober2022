@@ -1,0 +1,68 @@
+class Solution {
+    public void solveSudoku(char[][] board) {
+        solve(board,0,0);
+    }
+      public static boolean solve(char[][] board,int row,int col) {
+     if(row == board.length) {
+      return true;
+     }
+          int ni=0;
+          int nj=0;
+    if(col == board[0].length-1) {
+        ni = row+1;
+        nj=0;
+    } else {
+        ni= row;
+        nj=col+1;
+    }
+
+  
+    if(board[row][col] != '.') {
+      if(solve(board,ni,nj)) {
+          return true;
+      }
+    }
+    else {
+     for(int i=1; i<=9; i++) {
+       if(isSafe(board,row,col,i)){
+         board[row][col] = (char)(i+'0');  
+           if(solve(board,ni,nj)) {
+               return true;
+           } else {
+         board[row][col] = '.';
+         }
+     }
+    }
+    }
+          return false;
+   }
+
+    public static boolean isSafe(char[][] board, int row, int col, int val) {
+      //checking row
+      for(int i=0; i<9; i++) {
+        if(board[row][i] == (char)(val + '0')) {
+        return false;
+        }
+      } 
+       //checking column
+       for(int i=0; i<9; i++) {
+        if(board[i][col] == (char)(val + '0')) {
+        return false;
+        }
+      }
+      //checking submatrix - 3X3 grid
+      int sRi = row / 3 * 3;
+      int sCi = col / 3 * 3;
+      for(int i=sRi; i<sRi+3; i++){
+        for(int j=sCi; j<sCi+3; j++){
+          if(board[i][j] == (char)(val + '0')) {
+            return false;
+          }
+        }
+      }
+    return true;
+  }
+   
+  
+
+}
